@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "name": "Mara",
+        "bio": "Mysterious femme fatale with a deadly skill set, navigating shadows with lethal precision.",
+        "attribute": "Drama",
+        "profileimagepath": "assets/Profiles/Mara/Mara.jpg",
+        "matched": 0
+    },    
+    {
+        "id": 2,
+        "name": "Amy",
+        "bio": "Neuroscience enthusiast on a mission to decode the brain's secrets",
+        "attribute": "Nerd",
+        "profileimagepath": "assets/Profiles/Amy/Amy.jpg",
+        "matched": 0
+    },    
+    {
+        "id": 3,
+        "name": "Maria",
+        "bio": "Teacher shaping futures, one student at a time",
+        "attribute": "Teacher",
+        "profileimagepath": "assets/Profiles/Maria/Maria.jpg",
+        "matched": 0
+    },    
+    {
+        "id": 4,
+        "name": "Sarah",
+        "bio": "Eco-warrior fighting for a greener, sustainable world",
+        "attribute": "Plant Girl",
+        "profileimagepath": "assets/Profiles/Sarah/Sarah.jpg",
+        "matched": 0
+    },    
+    {
+        "id": 5,
+        "name": "Olivia",
+        "bio": "Journalist chasing truth, no matter the odds",
+        "attribute": "Journalist",
+        "profileimagepath": "assets/Profiles/Olivia/Olivia.jpg",
+        "matched": 0
+    }
+]

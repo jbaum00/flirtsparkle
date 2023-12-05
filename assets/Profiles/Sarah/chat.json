@@ -1,0 +1,23 @@
+{
+    "data": [
+      {
+        "id": 1,
+        "messages": ["SarahHey!", "Do I know you?"],
+        "answers": ["Ehh...I don't thing so?"],
+        "response": ["Hmmm do you know Ashley?"]
+      },
+      {
+        "id": 2,
+        "messages": ["Dark Hair, green eyes"],
+        "answers": ["There a probaly millions of Ashleys out there. Just saying.."],
+        "response": ["Anyway"]
+      },
+      {
+        "id": 3,
+        "messages": ["You new in Town?"],
+        "answers": ["Yes 😄 Up for some drinks?", "Hmm, honestly I do not know any people here..."],
+        "response": ["Sure. Where, when and how fancy does my dress needs to be? ;)", "I could show you some good spots!"]
+      }
+    ]
+  }
+    
