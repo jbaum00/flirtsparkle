@@ -35,7 +35,7 @@ class _ChatListPageState extends State<ChatListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopAppBarWidget('Chats'),
+      appBar: TopAppBarWidget('FlirtSparkle'),
       backgroundColor: Colors.white,
       body: _isLoading
           ? const Center(

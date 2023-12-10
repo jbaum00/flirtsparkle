@@ -121,12 +121,4 @@ class DataBaseConfig {
         {'blockid': currentindex, 'sender': sender, 'message': message},
         conflictAlgorithm: sql.ConflictAlgorithm.replace);
   }
-
-  /*static insertChatHistoryEntryDummy(
-      int currentindex, int sender, String message) async {
-    final sql.Database database = await db();
-    await database.insert(
-        'testabel', {'blockid': 1, 'sender': 1, 'message': 'Test'},
-        conflictAlgorithm: sql.ConflictAlgorithm.replace);
-  }*/
 }

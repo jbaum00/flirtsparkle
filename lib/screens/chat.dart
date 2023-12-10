@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:borealis/models/chatblock.dart';
 import 'package:borealis/providers/databaseconfig.dart';
 import 'package:borealis/providers/databaseconnector.dart';
@@ -39,6 +41,10 @@ class _ChatPageState extends State<ChatPage> {
     if (currentindex == 0) {
       insertChatData();
     }
+    _loadChatHistory();
+  }
+
+  void _loadChatHistory() async {
     final data = await DataBaseConnector.getChatHistory(characterName);
     setState(() {
       histolist = data;
@@ -73,7 +79,10 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.grey[900],
+        leading: const BackButton(
+          color: Colors.red,
+        ),
+        backgroundColor: Colors.white,
         title: Row(
           children: [
             CircleAvatar(
@@ -87,7 +96,7 @@ class _ChatPageState extends State<ChatPage> {
               child: Text(
                 characterName,
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: Colors.red,
                   fontWeight: FontWeight.bold,
                   fontSize: 22,
                 ),
@@ -97,12 +106,12 @@ class _ChatPageState extends State<ChatPage> {
         ),
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        /*decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/Wallpaper/Wallpaper.jpg'),
             fit: BoxFit.cover,
           ),
-        ),
+        ),*/
         child: Column(
           children: [
             Expanded(
@@ -118,17 +127,23 @@ class _ChatPageState extends State<ChatPage> {
               for (var entry
                   in chatBlocks[currentindex - 1].answers.asMap().entries)
                 ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.pink[400]!)),
                   onPressed: () async {
                     await DataBaseConfig.insertChatHistoryEntry(
                         characterName, currentindex, 1, entry.value);
-                    await DataBaseConfig.insertChatHistoryEntry(
-                        characterName,
-                        currentindex,
-                        0,
-                        chatBlocks[currentindex - 1].responses[entry.key]);
-                    insertChatData();
-                    setState(() {
-                      _initializeData(); // Lädt die Daten neu
+                    _loadChatHistory();
+                    Future.delayed(const Duration(seconds: 3), () async {
+                      await DataBaseConfig.insertChatHistoryEntry(
+                          characterName,
+                          currentindex,
+                          0,
+                          chatBlocks[currentindex - 1].responses[entry.key]);
+                      insertChatData();
+                      setState(() {
+                        _initializeData();
+                      });
                     });
                   },
                   child: Text(entry.value),
@@ -142,21 +157,27 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget buildMessage(String message, int sender) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(2.0),
       child: Align(
         alignment: sender == 0 ? Alignment.centerLeft : Alignment.centerRight,
-        child: Container(
-          decoration: BoxDecoration(
-            color:
-                sender == 0 ? Color.fromARGB(255, 27, 197, 112) : Colors.blue,
-            borderRadius: BorderRadius.circular(10.0),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            // Setting the maximum width to half of the screen width
+            maxWidth: MediaQuery.of(context).size.width / 1.6,
           ),
-          padding: const EdgeInsets.all(12.0),
-          child: Text(
-            message,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 22,
+          child: Container(
+            decoration: BoxDecoration(
+              //sender == 0 ? Color.fromARGB(255, 27, 197, 112) : Colors.blue,
+              color: sender == 0 ? Colors.grey[400] : Colors.pink[400],
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            padding: const EdgeInsets.all(12.0),
+            child: Text(
+              message,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+              ),
             ),
           ),
         ),
