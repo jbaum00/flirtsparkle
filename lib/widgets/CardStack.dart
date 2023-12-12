@@ -54,7 +54,8 @@ class _CardsStackWidgetState extends State<CardsStackWidget>
             profileimagepath: profileData['profileimagepath'],
             attribute: profileData['attribute'],
             bio: profileData['bio'],
-            matched: profileData['matched']);
+            matched: profileData['matched'],
+            finished: profileData['finished']);
       }).toList();
     });
   }

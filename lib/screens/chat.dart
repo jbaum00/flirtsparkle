@@ -26,6 +26,7 @@ class _ChatPageState extends State<ChatPage> {
   List<ChatBlock> chatBlocks = [];
   List histolist = [];
   dynamic data;
+  bool _isOverlayVisible = false;
 
   @override
   void initState() {
@@ -105,52 +106,85 @@ class _ChatPageState extends State<ChatPage> {
           ],
         ),
       ),
-      body: Container(
-        /*decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/Wallpaper/Wallpaper.jpg'),
-            fit: BoxFit.cover,
+      body: Stack(
+        children: [
+          Container(
+            color: Colors.white,
+            // Background Image
+            child: Column(
+              children: [
+                Container(
+                  height: 600,
+                  child: ListView.builder(
+                    itemCount: histolist.isNotEmpty ? histolist.length : 0,
+                    itemBuilder: (context, index) {
+                      return buildMessage(histolist[index]['message'],
+                          histolist[index]['sender']);
+                    },
+                  ),
+                ),
+                if (chatBlocks.isNotEmpty &&
+                    currentindex < chatBlocks.length) ...[
+                  for (var entry
+                      in chatBlocks[currentindex - 1].answers.asMap().entries)
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 5),
+                      child: SizedBox(
+                        width: 380,
+                        height: 50,
+                        child: Padding(
+                          padding: const EdgeInsets.all(1.0),
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.pink[400]!)),
+                            onPressed: () async {
+                              setState(() {
+                                _isOverlayVisible = true;
+                              });
+                              await DataBaseConfig.insertChatHistoryEntry(
+                                  characterName, currentindex, 1, entry.value);
+                              _loadChatHistory();
+                              await Future.delayed(const Duration(seconds: 3));
+                              await DataBaseConfig.insertChatHistoryEntry(
+                                  characterName,
+                                  currentindex,
+                                  0,
+                                  chatBlocks[currentindex - 1]
+                                      .responses[entry.key]);
+                              insertChatData();
+                              setState(() {
+                                _initializeData();
+                                _isOverlayVisible = false;
+                              });
+                            },
+                            child: Text(
+                              entry.value,
+                              textAlign: TextAlign.left,
+                              style: const TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ],
+            ),
           ),
-        ),*/
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: histolist.isNotEmpty ? histolist.length : 0,
-                itemBuilder: (context, index) {
-                  return buildMessage(
-                      histolist[index]['message'], histolist[index]['sender']);
-                },
+          if (_isOverlayVisible)
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              height: 200,
+              child: Container(
+                color: Colors.white.withOpacity(1),
               ),
             ),
-            if (chatBlocks.isNotEmpty && currentindex < chatBlocks.length) ...[
-              for (var entry
-                  in chatBlocks[currentindex - 1].answers.asMap().entries)
-                ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.pink[400]!)),
-                  onPressed: () async {
-                    await DataBaseConfig.insertChatHistoryEntry(
-                        characterName, currentindex, 1, entry.value);
-                    _loadChatHistory();
-                    Future.delayed(const Duration(seconds: 3), () async {
-                      await DataBaseConfig.insertChatHistoryEntry(
-                          characterName,
-                          currentindex,
-                          0,
-                          chatBlocks[currentindex - 1].responses[entry.key]);
-                      insertChatData();
-                      setState(() {
-                        _initializeData();
-                      });
-                    });
-                  },
-                  child: Text(entry.value),
-                ),
-            ],
-          ],
-        ),
+        ],
       ),
     );
   }
@@ -162,7 +196,6 @@ class _ChatPageState extends State<ChatPage> {
         alignment: sender == 0 ? Alignment.centerLeft : Alignment.centerRight,
         child: ConstrainedBox(
           constraints: BoxConstraints(
-            // Setting the maximum width to half of the screen width
             maxWidth: MediaQuery.of(context).size.width / 1.6,
           ),
           child: Container(

@@ -6,6 +6,7 @@ class Profile {
     required this.attribute,
     required this.profileimagepath,
     required this.matched,
+    required this.finished,
   });
   final int id;
   final String name;
@@ -13,4 +14,5 @@ class Profile {
   final String attribute;
   final String profileimagepath;
   final int matched;
+  final int finished;
 }

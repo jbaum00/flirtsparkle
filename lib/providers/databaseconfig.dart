@@ -29,7 +29,8 @@ class DataBaseConfig {
         bio TEXT,
         attribute TEXT,
         profileimagepath TEXT,
-        matched INTEGER
+        matched INTEGER,
+        finished INTEGER
       )
       """);
   }
