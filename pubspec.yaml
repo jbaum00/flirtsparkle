@@ -41,6 +41,13 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   shared_preferences: ^2.2.1
   intl: ^0.18.1
+  google_fonts: ^6.1.0
+  convex_bottom_bar: ^3.2.0
+  firebase_core: ^2.24.2
+  firebase_auth: ^4.15.3
+  google_sign_in: ^6.1.6
+  firebase_analytics: ^10.7.4
+  package_info_plus: ^4.2.0
 
 dev_dependencies:
   flutter_test:
@@ -75,6 +82,9 @@ flutter:
      - assets/Profiles/Olivia/Olivia.jpg
      - assets/Profiles/Olivia/chat.json
      - assets/Profiles/Sarah/Sarah.jpg
+     - assets/Profiles/Sarah/Sarah1.jpg
+     - assets/Profiles/Sarah/Sarah2.jpg
+     - assets/Profiles/Sarah/Sarah3.jpg
      - assets/Profiles/Sarah/chat.json
      - assets/Profiles/profiles.json
      - assets/Wallpaper/Wallpaper.jpg

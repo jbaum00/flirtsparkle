@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "emoji.json": "^15.0.0",
+    "sqlite": "^5.0.1"
+  }
+}
