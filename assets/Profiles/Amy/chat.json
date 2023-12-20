@@ -4,19 +4,22 @@
         "id": 1,
         "messages": ["AmyHey!", "Do I know you?"],
         "answers": ["Ehh...I don't thing so?"],
-        "response": ["Hmmm do you know Ashley?"]
+        "response": ["Hmmm do you know Ashley?"],
+        "breakpoint": 0
       },
       {
         "id": 2,
         "messages": ["Dark Hair, green eyes"],
         "answers": ["There a probaly millions of Ashleys out there. Just saying.."],
-        "response": ["Anyway"]
+        "response": ["Anyway"],
+        "breakpoint": 0
       },
       {
         "id": 3,
         "messages": ["You new in Town?"],
         "answers": ["Yes 😄 Up for some drinks?", "Hmm, honestly I do not know any people here..."],
-        "response": ["Sure. Where, when and how fancy does my dress needs to be? ;)", "I could show you some good spots!"]
+        "response": ["Sure. Where, when and how fancy does my dress needs to be? ;)", "I could show you some good spots!"],
+        "breakpoint": 0
       }
     ]
   }
