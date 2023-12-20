@@ -16,8 +16,12 @@ class BackgroudCurveWidget extends StatelessWidget {
           ),
         ),
         gradient: LinearGradient(
-          colors: <Color>[
+          /*colors: <Color>[
             Color(0xFF110E42),
+            Color.fromARGB(255, 15, 195, 186),
+          ],*/
+          colors: <Color>[
+            Color.fromARGB(255, 207, 27, 132),
             Color.fromARGB(255, 15, 195, 186),
           ],
         ),
@@ -26,9 +30,11 @@ class BackgroudCurveWidget extends StatelessWidget {
         padding: EdgeInsets.only(top: 46.0, left: 20.0),
         child: Text(
           'Get your match!',
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontFamily: 'Nunito',
             fontWeight: FontWeight.w800,
+            fontStyle: FontStyle.italic,
             color: Colors.white,
             fontSize: 36,
           ),

@@ -1,4 +1,3 @@
-import 'package:borealis/widgets/BottomNavigationBar.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/TopNavigationBar.dart';
@@ -33,12 +32,12 @@ class _PremiumPageState extends State<PremiumPage> {
                 offset: Offset(0, 2),
               )
             ]),
-        child: const Column(
+        /*child: const Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             BottomNavigationBarWidget(),
           ],
-        ),
+        ),*/
       ),
     );
   }

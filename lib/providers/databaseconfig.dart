@@ -51,7 +51,8 @@ class DataBaseConfig {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         blockid INTEGER,
         sender INTEGER,
-        message TEXT
+        message TEXT,
+        breakpoint INTEGER
       )
     """);
 
@@ -59,13 +60,14 @@ class DataBaseConfig {
         List<String> messages = List<String>.from(blockData['messages']);
         List<String> answers = List<String>.from(blockData['answers']);
         List<String> responses = List<String>.from(blockData['response']);
-        ChatBlock block = ChatBlock(messages, answers, responses);
+        int breakpoint = blockData['breakpoint'];
+        ChatBlock block = ChatBlock(messages, answers, responses, breakpoint);
         chatBlocks.add(block);
       }
 
       var messages = chatBlocks[0].messages;
       for (int i = 0; i < messages.length; i++) {
-        DataBaseConfig.insertChatHistoryEntry(profile, 1, 0, messages[i]);
+        DataBaseConfig.insertChatHistoryEntry(profile, 1, 0, messages[i], 0);
         chatBlocks.clear();
       }
     }
@@ -115,11 +117,17 @@ class DataBaseConfig {
     await insertData(database, 'profiles', 'assets/Profiles/profiles.json');
   }
 
-  static insertChatHistoryEntry(
-      String profile, int currentindex, int sender, String message) async {
+  static insertChatHistoryEntry(String profile, int currentindex, int sender,
+      String message, int breakpoint) async {
     final sql.Database database = await db();
-    await database.insert('${profile}chathistory',
-        {'blockid': currentindex, 'sender': sender, 'message': message},
+    await database.insert(
+        '${profile}chathistory',
+        {
+          'blockid': currentindex,
+          'sender': sender,
+          'message': message,
+          'breakpoint': breakpoint
+        },
         conflictAlgorithm: sql.ConflictAlgorithm.replace);
   }
 }

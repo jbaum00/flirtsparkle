@@ -1,5 +1,6 @@
 import 'package:borealis/providers/databaseconfig.dart';
 import 'package:borealis/providers/databaseconnector.dart';
+import 'package:borealis/screens/chat.dart';
 import 'package:flutter/material.dart';
 
 import '../models/profiles.dart';
@@ -19,6 +20,7 @@ class _CardsStackWidgetState extends State<CardsStackWidget>
   List<Map<String, dynamic>> data = [];
   List<Profile> draggableItems = [];
   final databaseConnector = DataBaseConnector();
+  bool isMatch = false;
 
   ValueNotifier<Swipe> swipeNotifier = ValueNotifier(Swipe.none);
   late final AnimationController _animationController;
@@ -62,6 +64,9 @@ class _CardsStackWidgetState extends State<CardsStackWidget>
 
   @override
   Widget build(BuildContext context) {
+    if (isMatch) {
+      return _buildMatchScreen(); // Anzeigen des Match-Bildschirms
+    }
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -156,6 +161,11 @@ class _CardsStackWidgetState extends State<CardsStackWidget>
                     databaseConnector.updateProfileMatched(currentProfile.id);
                     await DataBaseConfig.createChatHistoryTable(
                         currentProfile.name);
+
+                    setState(() {
+                      isMatch =
+                          true; // Setzen Sie isMatch auf true, wenn nach rechts gewischt wurde
+                    });
                   },
                   icon: const Icon(
                     Icons.favorite,
@@ -213,6 +223,84 @@ class _CardsStackWidgetState extends State<CardsStackWidget>
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildMatchScreen() {
+    final currentProfile =
+        draggableItems.last; // Profil, das gerade gematcht wurde
+
+    return Scaffold(
+      bottomNavigationBar: null,
+      body: GestureDetector(
+        onTap: () {
+          setState(() {
+            isMatch = false; // Zurücksetzen des Match-Status beim Tippen
+          });
+        },
+        child: Container(
+          color: Colors.black.withOpacity(0.8),
+          child: Center(
+            child: Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                Image.asset(
+                  currentProfile.profileimagepath,
+                  fit: BoxFit.cover,
+                  height: double.infinity,
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    const SizedBox(height: 400),
+                    Text(
+                      "IT'S A MATCH!",
+                      style: TextStyle(
+                          fontSize: 56,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.pink[400],
+                          fontStyle: FontStyle.italic),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ChatPage(characterName: currentProfile.name),
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.pink[400],
+                        backgroundColor:
+                            Colors.white, // Rosa Schriftfarbe beim Drücken
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 60, vertical: 16), // Größerer Button
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(30), // Abgerundete Ecken
+                        ),
+                      ),
+                      child: Text(
+                        'CHAT NOW',
+                        style: TextStyle(
+                          color: Colors.pink[400], // Rosa Schrift
+                          fontSize: 20, // Kleinere Schriftgröße
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

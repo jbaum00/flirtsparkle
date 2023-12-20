@@ -1,8 +1,8 @@
 import 'package:borealis/screens/chat.dart';
+import 'package:borealis/screens/profil.dart';
 import 'package:flutter/material.dart';
 
 import '../providers/databaseconnector.dart';
-import '../widgets/BottomNavigationBar.dart';
 import '../widgets/TopNavigationBar.dart';
 
 class ChatListPage extends StatefulWidget {
@@ -57,20 +57,28 @@ class _ChatListPageState extends State<ChatListPage> {
                                   MaterialPageRoute(builder: (context) {
                                 return ChatPage(
                                     characterName: chatlist[index]['name']);
-                                //return ChatTestPage();
                               }));
                             },
                             child: Row(
                               children: [
-                                SizedBox(
-                                  width: 80,
-                                  height: 80,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(
-                                        40), // Die Hälfte der Breite/Höhe für volle Rundung
-                                    child: Image.asset(
-                                      chatlist[index]['profileimagepath'],
-                                      fit: BoxFit.cover,
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return ProfilPage(
+                                          characterName: chatlist[index]
+                                              ['name']);
+                                    }));
+                                  },
+                                  child: SizedBox(
+                                    width: 80,
+                                    height: 80,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(40),
+                                      child: Image.asset(
+                                        chatlist[index]['profileimagepath'],
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -96,18 +104,15 @@ class _ChatListPageState extends State<ChatListPage> {
                         ),
                       ),
                     ),
-                    // Hier fügen Sie einen zusätzlichen Container hinzu:
-                    const SizedBox(
-                      // Geben Sie hier die Eigenschaften für den Container an
-
-                      height: 100, // Ändern Sie die Höhe nach Bedarf
+                    /*const SizedBox(
+                      height: 100,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           BottomNavigationBarWidget(),
                         ],
                       ),
-                    ),
+                    ),*/
                   ],
                 ),
     );

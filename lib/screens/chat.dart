@@ -4,14 +4,14 @@ import 'package:borealis/models/chatblock.dart';
 import 'package:borealis/providers/databaseconfig.dart';
 import 'package:borealis/providers/databaseconnector.dart';
 import 'package:borealis/providers/jsonconnector.dart';
+import 'package:borealis/screens/mainpage.dart';
 import 'package:flutter/material.dart';
-
-//App muss mit Firebase verbunden werden um den Log zu lesen und zu speichern
-//Gespeichter wird mit einer weiteren Datei für den momentanen Index
 
 class ChatPage extends StatefulWidget {
   final String characterName;
+
   const ChatPage({Key? key, required this.characterName}) : super(key: key);
+
   @override
   _ChatPageState createState() => _ChatPageState();
 }
@@ -22,11 +22,13 @@ class _ChatPageState extends State<ChatPage> {
   late List<String> messages;
   late List<String> answers;
   late List<String> responses;
+  late int breakpoint;
   late List<String> id;
   List<ChatBlock> chatBlocks = [];
   List histolist = [];
   dynamic data;
   bool _isOverlayVisible = false;
+  int basedelay = 3;
 
   @override
   void initState() {
@@ -58,7 +60,8 @@ class _ChatPageState extends State<ChatPage> {
       List<String> messages = List<String>.from(blockData['messages']);
       List<String> answers = List<String>.from(blockData['answers']);
       List<String> responses = List<String>.from(blockData['response']);
-      ChatBlock block = ChatBlock(messages, answers, responses);
+      int breakpoint = blockData['breakpoint'];
+      ChatBlock block = ChatBlock(messages, answers, responses, breakpoint);
       chatBlocks.add(block);
     }
   }
@@ -69,10 +72,11 @@ class _ChatPageState extends State<ChatPage> {
       return;
     }
     var messages = chatBlocks[currentindex].messages;
+    var breakpoint = chatBlocks[currentindex].breakpoint;
     currentindex++;
     for (int i = 0; i < messages.length; i++) {
       DataBaseConfig.insertChatHistoryEntry(
-          characterName, currentindex, 0, messages[i]);
+          characterName, currentindex, 0, messages[i], breakpoint);
     }
   }
 
@@ -80,8 +84,18 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const BackButton(
-          color: Colors.red,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.red),
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      MainPage()), // Ersetzen Sie MainPage durch den tatsächlichen Namen Ihrer Startseite
+              (Route<dynamic> route) =>
+                  false, // Entfernt alle vorherigen Routen
+            );
+          },
         ),
         backgroundColor: Colors.white,
         title: Row(
@@ -110,7 +124,6 @@ class _ChatPageState extends State<ChatPage> {
         children: [
           Container(
             color: Colors.white,
-            // Background Image
             child: Column(
               children: [
                 Container(
@@ -128,7 +141,7 @@ class _ChatPageState extends State<ChatPage> {
                   for (var entry
                       in chatBlocks[currentindex - 1].answers.asMap().entries)
                     Padding(
-                      padding: EdgeInsets.symmetric(vertical: 5),
+                      padding: const EdgeInsets.symmetric(vertical: 5),
                       child: SizedBox(
                         width: 380,
                         height: 50,
@@ -144,7 +157,11 @@ class _ChatPageState extends State<ChatPage> {
                                 _isOverlayVisible = true;
                               });
                               await DataBaseConfig.insertChatHistoryEntry(
-                                  characterName, currentindex, 1, entry.value);
+                                  characterName,
+                                  currentindex,
+                                  1,
+                                  entry.value,
+                                  0);
                               _loadChatHistory();
                               await Future.delayed(const Duration(seconds: 3));
                               await DataBaseConfig.insertChatHistoryEntry(
@@ -152,7 +169,8 @@ class _ChatPageState extends State<ChatPage> {
                                   currentindex,
                                   0,
                                   chatBlocks[currentindex - 1]
-                                      .responses[entry.key]);
+                                      .responses[entry.key],
+                                  0);
                               insertChatData();
                               setState(() {
                                 _initializeData();
@@ -180,13 +198,19 @@ class _ChatPageState extends State<ChatPage> {
               right: 0,
               bottom: 0,
               height: 200,
-              child: Container(
-                color: Colors.white.withOpacity(1),
-              ),
+              child: _buildOverlay(),
             ),
         ],
       ),
     );
+  }
+
+  Widget _buildOverlay() {
+    {
+      return Container(
+        color: Colors.white.withOpacity(1),
+      );
+    }
   }
 
   Widget buildMessage(String message, int sender) {
@@ -200,7 +224,6 @@ class _ChatPageState extends State<ChatPage> {
           ),
           child: Container(
             decoration: BoxDecoration(
-              //sender == 0 ? Color.fromARGB(255, 27, 197, 112) : Colors.blue,
               color: sender == 0 ? Colors.grey[400] : Colors.pink[400],
               borderRadius: BorderRadius.circular(10.0),
             ),
