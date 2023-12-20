@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "356002469999",
+    "project_id": "borealis-8f700",
+    "storage_bucket": "borealis-8f700.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:356002469999:android:a9ecddd96f421299c9d59a",
+        "android_client_info": {
+          "package_name": "com.example.borealis"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "356002469999-m9dfmdhqupilde15mf1tnkjsap51q8p2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.borealis",
+            "certificate_hash": "39fdc065469710a40c19795eb388310637b82423"
+          }
+        },
+        {
+          "client_id": "356002469999-l4q269bupp842fb61mmesqdf3tjpu9vq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCA76J9yEBAD396RAtbA_i8TYYeEjYN_1k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "356002469999-l4q269bupp842fb61mmesqdf3tjpu9vq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "356002469999-26qdrsdhik2678ccmaajh1ucdm0116on.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.borealis"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
