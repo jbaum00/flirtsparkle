@@ -52,7 +52,8 @@ class DataBaseConfig {
         blockid INTEGER,
         sender INTEGER,
         message TEXT,
-        breakpoint INTEGER
+        breakpoint INTEGER,
+        delay INTEGER
       )
     """);
 
@@ -61,7 +62,9 @@ class DataBaseConfig {
         List<String> answers = List<String>.from(blockData['answers']);
         List<String> responses = List<String>.from(blockData['response']);
         int breakpoint = blockData['breakpoint'];
-        ChatBlock block = ChatBlock(messages, answers, responses, breakpoint);
+        int delay = blockData['delay'];
+        ChatBlock block =
+            ChatBlock(messages, answers, responses, breakpoint, delay);
         chatBlocks.add(block);
       }
 
@@ -91,7 +94,7 @@ class DataBaseConfig {
     }
   }
 
-  static Future<void> insertTestData(
+  /*static Future<void> insertTestData(
       sql.Database database, String tableName, String assetPath) async {
     final List<Map<String, dynamic>> data =
         await loadJsonDataFromAsset(assetPath);
@@ -111,7 +114,7 @@ class DataBaseConfig {
           },
           conflictAlgorithm: sql.ConflictAlgorithm.replace);
     }
-  }
+  }*/
 
   static Future<void> insertTablesData(sql.Database database) async {
     await insertData(database, 'profiles', 'assets/Profiles/profiles.json');
@@ -126,7 +129,8 @@ class DataBaseConfig {
           'blockid': currentindex,
           'sender': sender,
           'message': message,
-          'breakpoint': breakpoint
+          'breakpoint': breakpoint,
+          'delay': breakpoint,
         },
         conflictAlgorithm: sql.ConflictAlgorithm.replace);
   }

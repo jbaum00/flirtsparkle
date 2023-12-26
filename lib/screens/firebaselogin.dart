@@ -11,7 +11,7 @@ import '../constants.dart';
 // firebase json file, and add configuration lines in the gradle files.
 // C.f. this commit: https://github.com/X-Wei/flutter_catalog/commit/48792cbc0de62fc47e0e9ba2cd3718117f4d73d1.
 class FirebaseLoginExample extends StatefulWidget {
-  const FirebaseLoginExample({super.key});
+  const FirebaseLoginExample({super.key, required String title});
 
   @override
   _FirebaseLoginExampleState createState() => _FirebaseLoginExampleState();
@@ -44,8 +44,9 @@ class _FirebaseLoginExampleState extends State<FirebaseLoginExample> {
             : 'You are logged in as "${_user!.displayName}".',
       ),
     );
-    final googleLoginBtn = MaterialButton(
-      color: Colors.blueAccent,
+    final googleLoginBtn = ElevatedButton.icon(
+      icon: Icon(Icons.login),
+      label: Text('Log in with Google'),
       onPressed: this._busy
           ? null
           : () async {
@@ -54,10 +55,14 @@ class _FirebaseLoginExampleState extends State<FirebaseLoginExample> {
               this._showUserProfilePage(user!);
               setState(() => this._busy = false);
             },
-      child: const Text('Log in with Google'),
+      style: ElevatedButton.styleFrom(
+        primary: Colors.blueAccent,
+        onPrimary: Colors.white,
+      ),
     );
-    final anonymousLoginBtn = MaterialButton(
-      color: Colors.deepOrange,
+    final anonymousLoginBtn = ElevatedButton.icon(
+      icon: Icon(Icons.person_outline),
+      label: Text('Log in anonymously'),
       onPressed: this._busy
           ? null
           : () async {
@@ -66,9 +71,14 @@ class _FirebaseLoginExampleState extends State<FirebaseLoginExample> {
               this._showUserProfilePage(user!);
               setState(() => this._busy = false);
             },
-      child: const Text('Log in anonymously'),
+      style: ElevatedButton.styleFrom(
+        primary: Colors.deepOrange,
+        onPrimary: Colors.white,
+      ),
     );
-    final signOutBtn = TextButton(
+    final signOutBtn = OutlinedButton.icon(
+      icon: Icon(Icons.logout),
+      label: Text('Log out'),
       onPressed: this._busy
           ? null
           : () async {
@@ -76,19 +86,22 @@ class _FirebaseLoginExampleState extends State<FirebaseLoginExample> {
               await this._signOut();
               setState(() => this._busy = false);
             },
-      child: const Text('Log out'),
     );
     return Center(
-      child: ListView(
-        padding: const EdgeInsets.symmetric(vertical: 100.0, horizontal: 50.0),
-        children: <Widget>[
-          Text(
-              'NOTE: prefer the flutterfire_ui package, see `FlutterFireLoginUiExample`.'),
-          statusText,
-          googleLoginBtn,
-          anonymousLoginBtn,
-          signOutBtn,
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            statusText,
+            SizedBox(height: 20),
+            googleLoginBtn,
+            SizedBox(height: 10),
+            anonymousLoginBtn,
+            SizedBox(height: 20),
+            if (_user != null) signOutBtn,
+          ],
+        ),
       ),
     );
   }

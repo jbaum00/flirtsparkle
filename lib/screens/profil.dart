@@ -18,7 +18,6 @@ class _ProfilPageState extends State<ProfilPage>
     'assets/Profiles/Sarah/Sarah1.jpg',
     'assets/Profiles/Sarah/Sarah2.jpg',
     'assets/Profiles/Sarah/Sarah3.jpg',
-    // ... Weitere Bildpfade
   ];
 
   @override

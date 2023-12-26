@@ -1,3 +1,4 @@
+import 'package:borealis/screens/chatlist.dart';
 import 'package:borealis/screens/firebaselogin.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,8 @@ class _MainPageState extends State<MainPage> {
     AchievementPage(title: 'Achievement'),
     SwipePage(title: 'Swipe'),
     PremiumPage(title: 'PremiumPage'),
-    FirebaseLoginExample(),
+    ChatListPage(title: 'FlirtSpark'),
+    FirebaseLoginExample(title: 'FlirtSpark'),
   ];
 
   @override
@@ -38,8 +40,8 @@ class _MainPageState extends State<MainPage> {
           TabItem(icon: Icons.military_tech_outlined, title: 'Achievements'),
           TabItem(icon: Icons.style, title: 'Swipe'),
           TabItem(icon: Icons.star, title: 'PremiumPage'),
-          //TabItem(icon: Icons.textsms_outlined, title: 'Chats'),
-          TabItem(icon: Icons.g_translate, title: 'Firebase'),
+          TabItem(icon: Icons.textsms_outlined, title: 'Chats'),
+          TabItem(icon: Icons.g_mobiledata, title: 'Firebase'),
         ],
         initialActiveIndex: _selectedIndex,
         onTap: (int index) {

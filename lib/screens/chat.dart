@@ -23,12 +23,12 @@ class _ChatPageState extends State<ChatPage> {
   late List<String> answers;
   late List<String> responses;
   late int breakpoint;
+  //late int delay;
   late List<String> id;
   List<ChatBlock> chatBlocks = [];
   List histolist = [];
   dynamic data;
   bool _isOverlayVisible = false;
-  int basedelay = 3;
 
   @override
   void initState() {
@@ -61,7 +61,9 @@ class _ChatPageState extends State<ChatPage> {
       List<String> answers = List<String>.from(blockData['answers']);
       List<String> responses = List<String>.from(blockData['response']);
       int breakpoint = blockData['breakpoint'];
-      ChatBlock block = ChatBlock(messages, answers, responses, breakpoint);
+      int delay = blockData['delay'];
+      ChatBlock block =
+          ChatBlock(messages, answers, responses, breakpoint, delay);
       chatBlocks.add(block);
     }
   }
@@ -163,7 +165,8 @@ class _ChatPageState extends State<ChatPage> {
                                   entry.value,
                                   0);
                               _loadChatHistory();
-                              await Future.delayed(const Duration(seconds: 3));
+                              int delay = chatBlocks[currentindex - 1].delay;
+                              await Future.delayed(Duration(seconds: delay));
                               await DataBaseConfig.insertChatHistoryEntry(
                                   characterName,
                                   currentindex,
