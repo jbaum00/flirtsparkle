@@ -1,5 +1,5 @@
+import 'package:borealis/screens/Stopwatch.dart';
 import 'package:borealis/screens/chatlist.dart';
-import 'package:borealis/screens/firebaselogin.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -21,8 +21,11 @@ class _MainPageState extends State<MainPage> {
     AchievementPage(title: 'Achievement'),
     SwipePage(title: 'Swipe'),
     PremiumPage(title: 'PremiumPage'),
-    ChatListPage(title: 'FlirtSpark'),
-    FirebaseLoginExample(title: 'FlirtSpark'),
+    ChatListPage(),
+    StopWatch(
+      name: 'A',
+      email: 'a',
+    ),
   ];
 
   @override

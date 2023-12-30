@@ -1,120 +1,113 @@
+import 'package:borealis/providers/chatlistmanager.dart';
 import 'package:borealis/screens/chat.dart';
 import 'package:borealis/screens/profil.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../providers/databaseconnector.dart';
 import '../widgets/TopNavigationBar.dart';
 
 class ChatListPage extends StatefulWidget {
-  const ChatListPage({Key? key, required String title}) : super(key: key);
+  const ChatListPage({Key? key}) : super(key: key);
+
   @override
   _ChatListPageState createState() => _ChatListPageState();
 }
 
 class _ChatListPageState extends State<ChatListPage> {
-  List<Map<String, dynamic>> chatlist = [];
-
-  bool _isLoading = true;
-
-  // This function is used to fetch all data from the database
-  void _refreshData() async {
-    final data = await DataBaseConnector.getProfiles();
-    setState(() {
-      chatlist = data;
-      _isLoading = false;
-    });
-  }
-
-  //Loading data on page call
-  @override
-  void initState() {
-    super.initState();
-    _refreshData();
-  }
-
   @override
   Widget build(BuildContext context) {
+    // Zugriff auf den ChatManager, um die aktuelle Chat-Liste zu erhalten
+    final chatList = Provider.of<ChatListManager>(context).chatList;
+
     return Scaffold(
       appBar: TopAppBarWidget('FlirtSparkle'),
       backgroundColor: Colors.white,
-      body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : chatlist.isEmpty
-              ? const Center(child: Text("No Data Available!!!"))
-              : Column(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: ListView.builder(
-                          itemCount: chatlist.length,
-                          itemBuilder: (context, index) => InkWell(
-                            highlightColor: Colors.grey[100],
-                            onTap: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return ChatPage(
-                                    characterName: chatlist[index]['name']);
-                              }));
-                            },
-                            child: Row(
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return ProfilPage(
-                                          characterName: chatlist[index]
-                                              ['name']);
-                                    }));
+      body: chatList.isEmpty
+          ? const Center(child: Text("Mach dein erstes Match!"))
+          : Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: ListView.builder(
+                      itemCount: chatList.length,
+                      itemBuilder: (context, index) {
+                        final item = chatList[index];
+                        return InkWell(
+                          highlightColor: Colors.grey[100],
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder: (context, animation,
+                                          secondaryAnimation) =>
+                                      ChatPage(
+                                          characterName: chatList[index]
+                                              ['name']),
+                                  transitionsBuilder: (context, animation,
+                                      secondaryAnimation, child) {
+                                    const begin = Offset(1.0,
+                                        0.0); // Beginn rechts außerhalb des Bildschirms
+                                    const end = Offset
+                                        .zero; // Endet genau im Bildschirmbereich
+                                    const curve = Curves.ease;
+
+                                    var tween = Tween(begin: begin, end: end)
+                                        .chain(CurveTween(curve: curve));
+                                    return SlideTransition(
+                                      position: animation.drive(tween),
+                                      child: child,
+                                    );
                                   },
-                                  child: SizedBox(
-                                    width: 80,
-                                    height: 80,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(40),
-                                      child: Image.asset(
-                                        chatlist[index]['profileimagepath'],
-                                        fit: BoxFit.cover,
-                                      ),
+                                ));
+                          },
+                          child: Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return ProfilPage(
+                                        characterName: item['name']);
+                                  }));
+                                },
+                                child: SizedBox(
+                                  width: 80,
+                                  height: 80,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(40),
+                                    child: Image.asset(
+                                      item['profileimagepath'],
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
                                 ),
-                                Expanded(
-                                  child: ListTile(
-                                    textColor: Colors.red,
-                                    title: Text(
-                                      chatlist[index]['name'],
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 22,
-                                      ),
-                                    ),
-                                    subtitle: Text(chatlist[index]['bio']),
-                                    trailing: const SizedBox(
-                                      width: 50,
+                              ),
+                              Expanded(
+                                child: ListTile(
+                                  textColor: Colors.red,
+                                  title: Text(
+                                    item['name'],
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 22,
                                     ),
                                   ),
+                                  subtitle: Text(item['bio']),
+                                  trailing: const SizedBox(
+                                    width: 50,
+                                  ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     ),
-                    /*const SizedBox(
-                      height: 100,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          BottomNavigationBarWidget(),
-                        ],
-                      ),
-                    ),*/
-                  ],
+                  ),
                 ),
+              ],
+            ),
     );
   }
 }

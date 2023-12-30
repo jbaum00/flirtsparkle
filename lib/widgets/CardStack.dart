@@ -1,7 +1,9 @@
-import 'package:borealis/providers/databaseconfig.dart';
-import 'package:borealis/providers/databaseconnector.dart';
+import 'package:borealis/database/databaseconfig.dart';
+import 'package:borealis/database/databaseconnector.dart';
+import 'package:borealis/providers/chatlistmanager.dart';
 import 'package:borealis/screens/chat.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/profiles.dart';
 import '../screens/swipe.dart';
@@ -155,6 +157,8 @@ class _CardsStackWidgetState extends State<CardsStackWidget>
                 const SizedBox(width: 20),
                 ActionButtonWidget(
                   onPressed: () async {
+                    final chatManager =
+                        Provider.of<ChatListManager>(context, listen: false);
                     swipeNotifier.value = Swipe.right;
                     _animationController.forward();
                     final currentProfile = draggableItems.last;
@@ -162,9 +166,10 @@ class _CardsStackWidgetState extends State<CardsStackWidget>
                     await DataBaseConfig.createChatHistoryTable(
                         currentProfile.name);
 
+                    await chatManager.updateChatListAfterMatch();
+
                     setState(() {
-                      isMatch =
-                          true; // Setzen Sie isMatch auf true, wenn nach rechts gewischt wurde
+                      isMatch = true;
                     });
                   },
                   icon: const Icon(

@@ -22,7 +22,7 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
     const AchievementPage(title: 'Achievement'),
     const SwipePage(title: 'SwipePage'),
     const PremiumPage(title: 'PremiumPage'),
-    const ChatListPage(title: 'Chats'),
+    const ChatListPage(),
   ];
 
   @override
